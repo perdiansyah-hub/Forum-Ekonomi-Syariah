@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Pemilihan Forum Ekonomi Syariah</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0d2e0d, #2a5c2a);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            width: 250px;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .container h2 {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+            font-size: 26px;
+        }
+
+        .container p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 17px;
+            font-weight: 600;
+            background: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 15px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .google-btn:hover {
+            background: #3367d6;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(66, 133, 244, 0.4);
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .user-details {
+            text-align: left;
+            flex-grow: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .user-email {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .name-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            margin: 12px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            outline: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #4CAF50;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 17px;
+            font-weight: 600;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .error {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .modal {
+            background: rgba(20, 30, 20, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            width: 90%;
+            max-width: 650px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+            color: white;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            margin: 8px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            outline: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            border-color: #4CAF50;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+        }
+
+        .success-message {
+            display: none;
+            background: rgba(76, 175, 80, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 1px solid #4CAF50;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Voting Pemilihan Pengurus</h2>
+        <p>Selamat datang di sistem voting pemilihan pengurus Forum Ekonomi Syariah. Partisipasi Anda sangat berarti bagi kemajuan organisasi.</p>
+        <img class="logo" src="https://i.imgur.com/eJZdfSB.png" alt="Logo Forum Ekonomi Syariah">
+        
+        <button id="googleSignInBtn" class="google-btn">
+            <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo">
+            Masuk dengan Google
+        </button>
+        
+        <div id="userSection" style="display: none;">
+            <div class="user-info">
+                <img id="userAvatar" class="user-avatar" src="" alt="User Avatar">
+                <div class="user-details">
+                    <div id="userName" class="user-name"></div>
+                    <div id="userEmail" class="user-email"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="nameSection" class="name-section">
+            <div class="form-group">
+                <label for="name">Masukkan nama lengkap Anda:</label>
+                <input type="text" id="name" placeholder="Contoh: Ahmad Budiman">
+                <div id="nameError" class="error">Silakan masukkan nama Anda</div>
+            </div>
+            
+            <button id="startButton" disabled>Mulai Voting</button>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <h2>Voting Pemilihan Pengurus</h2>
+            <p id="displayName">Pemilih: <strong id="voterName"></strong></p>
+
+            <div class="form-group">
+                <label for="ceo">CEO (Chief Executive Officer):</label>
+                <select id="ceo" required>
+                    <option value="" disabled selected>Pilih Kandidat</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="coo">COO (Chief Operating Officer):</label>
+                <select id="coo" required>
+                    <option value="" disabled selected>Pilih Kandidat</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cao">CAO (Chief Administrative Officer):</label>
+                <select id="cao" required>
+                    <option value="" disabled selected>Pilih Kandidat</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cfo">CFO (Chief Financial Officer):</label>
+                <select id="cfo" required>
+                    <option value="" disabled selected>Pilih Kandidat</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cso">CSO (Chief Strategy Officer):</label>
+                <select id="cso" required>
+                    <option value="" disabled selected>Pilih Kandidat</option>
+                </select>
+            </div>
+            
+            <button onclick="validateAndSubmit()">Kirim Voting</button>
+            
+            <div id="successMessage" class="success-message">
+                <p>Terima kasih atas partisipasi Anda! Voting telah berhasil dikirim.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAg5lo9Cg5HKDUY9yAb1uHt6u53t6hBZrk",
+            authDomain: "forum-ekonomi-syariah.firebaseapp.com",
+            projectId: "forum-ekonomi-syariah",
+            storageBucket: "forum-ekonomi-syariah.firebasestorage.app",
+            messagingSenderId: "14225425710",
+            appId: "1:14225425710:web:f8e00752f4c91c28a326bf",
+            measurementId: "G-HJ9XR39ZQH"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const candidates = [
+            "Alisya Lesmana Bagenda", "Annas Firmansyah", "Farid Maulana Sidiq", "Indri Azwar",
+            "Irgi Ramdhan Hidayat", "Jauza Ayu Aulia Ardhani", "Melinda Nur'aini", "Nabila Siti Nurhayati",
+            "Nazwa Salsabila", "Nisa Rahmatilah", "Perdiansyah", "Qori Meylani", "Rani Sulistiani",
+            "Riki Juliansyah", "Rivia Oktaviani", "Rizki Muhamad Husnun", "Sara Aulia",
+            "Shakira Quinetta Tanuwijaya", "Shesifa Nurul Falah", "Taruna Suryadi"
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("googleSignInBtn").addEventListener("click", signInWithGoogle);
+            document.getElementById("name").addEventListener("input", validateNameInput);
+            document.getElementById("startButton").addEventListener("click", startVotingProcess);
+            
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    showUserInfo(user);
+                    checkVoteStatus(user.uid);
+                } else {
+                    document.getElementById("userSection").style.display = "none";
+                    document.getElementById("nameSection").style.display = "none";
+                    document.getElementById("googleSignInBtn").style.display = "block";
+                }
+            });
+        });
+
+        function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    showUserInfo(user);
+                    document.getElementById("nameSection").style.display = "block";
+                    document.getElementById("name").focus();
+                })
+                .catch((error) => {
+                    console.error("Error signing in:", error);
+                    alert("Gagal masuk dengan Google: " + error.message);
+                });
+        }
+
+        function showUserInfo(user) {
+            document.getElementById("userSection").style.display = "block";
+            document.getElementById("googleSignInBtn").style.display = "none";
+            
+            document.getElementById("userName").textContent = user.displayName || "Pengguna";
+            document.getElementById("userEmail").textContent = user.email;
+            document.getElementById("userAvatar").src = user.photoURL || "https://i.imgur.com/8Km9tLL.png";
+        }
+
+        function validateNameInput() {
+            const nameInput = document.getElementById("name").value.trim();
+            const startButton = document.getElementById("startButton");
+            
+            if (nameInput.length > 0) {
+                startButton.disabled = false;
+                document.getElementById("nameError").style.display = "none";
+            } else {
+                startButton.disabled = true;
+            }
+        }
+
+        function startVotingProcess() {
+            const nameInput = document.getElementById("name").value.trim();
+            const errorElement = document.getElementById("nameError");
+            
+            if (nameInput === "") {
+                errorElement.style.display = "block";
+                return;
+            }
+            
+            errorElement.style.display = "none";
+            document.getElementById("voterName").textContent = nameInput;
+            
+            // Populate candidate dropdowns
+            const positions = ['ceo', 'coo', 'cao', 'cfo', 'cso'];
+            positions.forEach(position => {
+                const select = document.getElementById(position);
+                select.innerHTML = '<option value="" disabled selected>Pilih Kandidat</option>';
+                candidates.forEach(candidate => {
+                    const option = document.createElement('option');
+                    option.value = candidate;
+                    option.textContent = candidate;
+                    select.appendChild(option);
+                });
+            });
+            
+            showModal();
+        }
+
+        function checkVoteStatus(userId) {
+            db.collection("votes").doc(userId).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        document.getElementById("nameSection").innerHTML = `
+                            <div style="color: #ff6b6b; margin-top: 20px;">
+                                Anda sudah melakukan voting sebelumnya. Setiap akun hanya boleh voting sekali.
+                            </div>
+                        `;
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error checking vote status:", error);
+                });
+        }
+
+        function submitVote() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Anda harus masuk terlebih dahulu!");
+                return;
+            }
+            
+            const nameInput = document.getElementById("name").value.trim();
+            if (!nameInput) {
+                alert("Nama lengkap harus diisi!");
+                return;
+            }
+            
+            const voteData = {
+                voterName: nameInput,
+                voterEmail: user.email,
+                voterId: user.uid,
+                ceo: document.getElementById("ceo").value,
+                coo: document.getElementById("coo").value,
+                cao: document.getElementById("cao").value,
+                cfo: document.getElementById("cfo").value,
+                cso: document.getElementById("cso").value,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            db.collection("votes").doc(user.uid).set(voteData)
+                .then(() => {
+                    console.log("Vote successfully submitted!");
+                    document.getElementById("successMessage").style.display = "block";
+                    
+                    document.getElementById("nameSection").innerHTML = `
+                        <div style="color: #4CAF50; margin-top: 20px;">
+                            Terima kasih telah berpartisipasi dalam voting!
+                        </div>
+                    `;
+                    
+                    setTimeout(() => {
+                        closeModal();
+                    }, 2000);
+                })
+                .catch((error) => {
+                    console.error("Error submitting vote:", error);
+                    alert("Gagal menyimpan voting: " + error.message);
+                });
+        }
+
+        function showModal() {
+            document.getElementById("overlay").style.visibility = "visible";
+            document.getElementById("overlay").style.opacity = "1";
+            document.querySelector(".modal").style.transform = "scale(1)";
+        }
+
+        function closeModal() {
+            document.getElementById("overlay").style.visibility = "hidden";
+            document.getElementById("overlay").style.opacity = "0";
+            document.querySelector(".modal").style.transform = "scale(0.9)";
+        }
+
+        function validateAndSubmit() {
+            const positions = ['ceo', 'coo', 'cao', 'cfo', 'cso'];
+            let isValid = true;
+            
+            positions.forEach(position => {
+                if (!document.getElementById(position).value) {
+                    isValid = false;
+                    alert(`Silakan pilih kandidat untuk posisi ${position.toUpperCase()}`);
+                }
+            });
+            
+            if (isValid) {
+                submitVote();
+            }
+        }
+    </script>
+</body>
+</html>
